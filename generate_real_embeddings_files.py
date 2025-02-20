@@ -46,7 +46,7 @@ def dna_to_rna(seq):
     return seq.replace("T", "U")
 
 
-# 🔥 Generator to stream sequences without loading everything into RAM
+# Generator to stream sequences without loading everything into RAM
 def stream_sequences(fasta_paths, species_filter, list_arn_chosen, nb_sample):
     for fasta_path in fasta_paths:
         compteur_arn = {}
@@ -67,7 +67,7 @@ def generate_files():
     # Load FASTA files
     fasta_paths = [r"/content/drive/MyDrive/Colab Notebooks/ensembl.fasta"]
 
-    # 📌 Create directories for storage
+    # Create directories for storage
     save_dir = "/content/drive/MyDrive/rna_data"
     embeddings_dir = f"{save_dir}/embeddings"
     Path(save_dir).mkdir(parents=True, exist_ok=True)
@@ -77,7 +77,7 @@ def generate_files():
     sequences_file = f"{save_dir}/rna_sequences.txt"
     embeddings_index_file = f"{save_dir}/rna_embeddings_index.txt"
 
-    # ✅ Step 1: Count the total number of sequences
+    # Step 1: Count the total number of sequences
     print("Counting sequences...")
     num_sequences = sum(1 for _ in stream_sequences(fasta_paths, species_filter, list_arn_chosen, nb_sample))
     print("Number of sequences:", num_sequences)
@@ -85,7 +85,7 @@ def generate_files():
     embedding_shape = (num_sequences, 1024, 640)
     token_embeddings = np.memmap(f'{save_dir}/token_embeddings.dat', dtype='float32', mode='w+', shape=embedding_shape)
 
-    # ✅ Step 2: Process and save progressively
+    # Step 2: Process and save progressively
     print("Processing RNA sequences...")
 
     idx = 0  # Index to name embedding files
@@ -112,14 +112,14 @@ def generate_files():
             token_embeddings[index:index+1, :emb.shape[0], :] = emb
             index += 1
 
-            # 🔥 Save embedding as a unique .npy file
+            # Save embedding as a unique .npy file
             embedding_filename = f"embedding_{idx}.npy"
             np.save(os.path.join(embeddings_dir, embedding_filename), emb)
 
-            # 🔥 Save embedding index
+            # Save embedding index
             f_emb_index.write(f"{embedding_filename}\n")
 
-            # 🔥 Save labels and sequences
+            # Save labels and sequences
             f_labels.write(f"{category}\n")
             f_seq.write(f"{rna_seq}\n")
 
