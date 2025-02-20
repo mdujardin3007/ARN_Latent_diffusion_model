@@ -22,7 +22,7 @@ rfam_dict = {
     "Autre": "other",
 }
 
-# ✅ Charger la liste des fichiers embeddings
+# Charger la liste des fichiers embeddings
 with open(embeddings_index_file, "r") as f_emb_index:
     embedding_filenames = [line.strip() for line in f_emb_index]
 
