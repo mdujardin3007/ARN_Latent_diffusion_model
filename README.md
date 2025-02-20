@@ -4,6 +4,14 @@ This Deep Learning course project, made by Alexandre Dessagne and Mathieu Dujard
 Introduction
 The aim of this study is to use generative AI to generate new non coding RNA sequences (ncRNA). ncRNA can be used in many ways to regulate protein expression in the human body. This can be applied to bolster the expression of tumor suppressor genes or inhibit the one of oncogenes (see poster 1st figure). 
 The work is based on the [Ensembl genome dataset.](https://drive.google.com/file/d/1LjqV4Ma1Em48SecGBGjPtuKc0AJLpy7_/view?usp=sharing)
+We limited each RNA categories to 1500 samples, making the whole database close to 10000 sequences.
+
+<img src="arn_categories_distribution.png" width="300">
+
+The dataset shows a wide distribution of RNA sequence lengths, with a majority of shorter sequences. We chose to limit the length to 768 nucleotides per RNA, as done in the preprocessing step in the article, to ensure consistency across all entries. pendant quelques secondes
+The dataset shows a wide range of sequence lengths, with a concentration of shorter sequences but also some longer ones. We limit the maximum length to 768 nucleotides per RNA, following the preprocessing steps described in the article.
+
+<img src="ditribution taille arn.png" width="400">
 
 Our aim is to generate plausible ncRNA sequences to learn about diffusion in a discrete setting.
 
