@@ -29,7 +29,7 @@ NUCLEOTIDE_TO_INDEX = {"A": 0, "U": 1, "G": 2, "C": 3}
 
 model = ARNModel().to(DEVICE)
 
-# ✅ Charger la liste des fichiers embeddings
+# Charger la liste des fichiers embeddings
 with open(embeddings_index_file, "r") as f_emb_index:
     embedding_filenames = [line.strip() for line in f_emb_index]
 
