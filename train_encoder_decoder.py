@@ -10,7 +10,7 @@ from torch.nn.utils.rnn import pad_sequence
 from encoder_decoder_model import ARNModel
 
 # ==============================
-# 📌 HYPERPARAMÈTRES
+# HYPERPARAMÈTRES
 # ==============================
 LATENT_DIM = 40  # Dimension des embeddings latents (D)
 NUM_QUERIES = 16  # Nombre de queries (K)
@@ -23,7 +23,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 NUCLEOTIDE_TO_INDEX = {"A": 0, "U": 1, "G": 2, "C": 3}
 
 # ==============================
-# 📌 CHARGEMENT DES DONNÉES
+# CHARGEMENT DES DONNÉES
 # ==============================
 save_dir = "/content/drive/MyDrive/rna_data"
 embeddings_dir = f"{save_dir}/embeddings"
@@ -37,7 +37,7 @@ criterion = nn.CrossEntropyLoss(ignore_index=4)  # Ignore le padding
 
 
 def train_encoder_decoder():
-    # ✅ Charger la liste des fichiers embeddings
+    # Charger la liste des fichiers embeddings
     with open(embeddings_index_file, "r") as f_emb_index:
         embedding_filenames = [line.strip() for line in f_emb_index]
 
@@ -45,7 +45,7 @@ def train_encoder_decoder():
     print(f"Nombre total de séquences ARN chargées : {num_sequences}")
 
     # ==============================
-    # 📌 BOUCLE D'ENTRAÎNEMENT
+    # BOUCLE D'ENTRAÎNEMENT
     # ==============================
     for epoch in range(EPOCHS):
         total_loss = 0
@@ -53,7 +53,7 @@ def train_encoder_decoder():
             for i in tqdm(range(0, num_sequences, BATCH_SIZE)):
                 batch_filenames = embedding_filenames[i:i+BATCH_SIZE]
 
-                # 🔥 Charger dynamiquement les embeddings pour chaque séquence : `(L, 640)`
+                # Charger dynamiquement les embeddings pour chaque séquence : `(L, 640)`
                 batch_token_embs = []
                 for emb_file in batch_filenames:
                     emb = np.load(os.path.join(embeddings_dir, emb_file))
@@ -63,7 +63,7 @@ def train_encoder_decoder():
                 # Gestion de longueurs variables via pad_sequence : `(B, max_L, 640)`
                 batch_token_embs = pad_sequence(batch_token_embs, batch_first=True)
 
-                # 🔥 Lire les séquences ARN (une par échantillon)
+                # Lire les séquences ARN (une par échantillon)
                 batch_rna_seqs = []
                 for _ in range(len(batch_filenames)):
                     line = f_seq.readline().strip()
@@ -86,4 +86,4 @@ def train_encoder_decoder():
         print(f"Epoch {epoch+1}/{EPOCHS}, Loss: {total_loss / (num_sequences / BATCH_SIZE):.4f}")
 
     torch.save(model.state_dict(), "arn_model.pth")
-    print("Entraînement terminé ✅")
+    print("Entraînement terminé")
