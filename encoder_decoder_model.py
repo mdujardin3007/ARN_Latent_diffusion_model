@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 # ==============================
-# 📌 HYPERPARAMÈTRES
+# HYPERPARAMÈTRES
 # ==============================
 LATENT_DIM = 40  # Dimension des embeddings latents (D)
 NUM_QUERIES = 16  # Nombre de queries (K)
@@ -17,7 +17,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 NUCLEOTIDE_TO_INDEX = {"A": 0, "U": 1, "G": 2, "C": 3}
 
 # ==============================
-# 📌 CHARGEMENT DES DONNÉES
+# CHARGEMENT DES DONNÉES
 # ==============================
 save_dir = "/content/drive/MyDrive/rna_data"
 embeddings_dir = f"{save_dir}/embeddings"
@@ -25,7 +25,7 @@ labels_file = f"{save_dir}/rna_labels.txt"
 sequences_file = f"{save_dir}/rna_sequences.txt"
 embeddings_index_file = f"{save_dir}/rna_embeddings_index.txt"
 
-# ✅ Charger la liste des fichiers embeddings
+# Charger la liste des fichiers embeddings
 with open(embeddings_index_file, "r") as f_emb_index:
     embedding_filenames = [line.strip() for line in f_emb_index]
 
@@ -33,7 +33,7 @@ num_sequences = len(embedding_filenames)
 print(f"Nombre total de séquences ARN chargées : {num_sequences}")
 
 # ==============================
-# 📌 Q-FORMER (ENCODEUR GÉRANT L LONGUEUR VARIABLE)
+# Q-FORMER (ENCODEUR GÉRANT L LONGUEUR VARIABLE)
 # ==============================
 class QFormer(nn.Module):
     def __init__(self, input_dim=640, latent_dim=LATENT_DIM, num_queries=NUM_QUERIES):
@@ -54,7 +54,7 @@ class QFormer(nn.Module):
         return latent_repr
 
 # ==============================
-# 📌 PROJECTION EN SOFT PROMPTS POUR LE DÉCODEUR
+# PROJECTION EN SOFT PROMPTS POUR LE DÉCODEUR
 # ==============================
 class LatentToPrompt(nn.Module):
     def __init__(self, latent_dim=LATENT_DIM):
@@ -66,7 +66,7 @@ class LatentToPrompt(nn.Module):
         return self.fc(latents)
 
 # ==============================
-# 📌 CAUSAL TRANSFORMER DÉCODEUR
+# CAUSAL TRANSFORMER DÉCODEUR
 # ==============================
 class CausalTransformerDecoder(nn.Module):
     def __init__(self, latent_dim=LATENT_DIM, num_tokens=VOCAB_SIZE):
@@ -86,7 +86,7 @@ class CausalTransformerDecoder(nn.Module):
         return self.fc_out(output)  # `(B, L_target, VOCAB_SIZE)`
 
 # ==============================
-# 📌 MODÈLE COMPLET
+# MODÈLE COMPLET
 # ==============================
 class ARNModel(nn.Module):
     def __init__(self):
