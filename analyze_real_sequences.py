@@ -4,14 +4,14 @@ from tqdm import tqdm
 import numpy as np
 import os 
 
-# 📌 Définition des chemins des fichiers
+# Définition des chemins des fichiers
 save_dir = "/content/drive/MyDrive/rna_data"
 sequences_file = f"{save_dir}/rna_sequences.txt"
 labels_file = f"{save_dir}/rna_labels.txt"
 embeddings_dir = f"{save_dir}/embeddings"
 embeddings_index_file = f"{save_dir}/rna_embeddings_index.txt"
 
-# ✅ Analyse de la distribution des bases (A, U, G, C)
+# Analyse de la distribution des bases (A, U, G, C)
 base_counts = {"A": 0, "U": 0, "G": 0, "C": 0}
 
 def analyze_sequences():
@@ -24,7 +24,7 @@ def analyze_sequences():
 
     print("Distribution des nucléotides :", base_counts)
 
-    # 📊 Affichage de la distribution des bases
+    # Affichage de la distribution des bases
     plt.figure(figsize=(6, 4))
     plt.bar(base_counts.keys(), base_counts.values(), color=['blue', 'orange', 'green', 'red'])
     plt.xlabel("Nucléotides (A, U, G, C)")
@@ -32,7 +32,7 @@ def analyze_sequences():
     plt.title("Distribution des nucléotides dans les séquences ARN")
     plt.show()
 
-    # ✅ Analyse de la distribution des catégories ARN
+    # Analyse de la distribution des catégories ARN
     category_counts = Counter()
 
     with open(labels_file, "r") as f_labels:
@@ -41,7 +41,7 @@ def analyze_sequences():
 
     print("Distribution des catégories ARN :", category_counts)
 
-    # 📊 Affichage de la distribution des catégories ARN
+    # Affichage de la distribution des catégories ARN
     plt.figure(figsize=(10, 5))
     plt.bar(category_counts.keys(), category_counts.values(), color='purple')
     plt.xticks(rotation=90)
@@ -50,7 +50,7 @@ def analyze_sequences():
     plt.title("Distribution des catégories ARN")
     plt.show()
 
-    # ✅ Analyse des tailles des embeddings
+    # Analyse des tailles des embeddings
     embedding_sizes = []
 
     with open(embeddings_index_file, "r") as f_emb_index:
@@ -65,7 +65,7 @@ def analyze_sequences():
     print(f"Taille max des embeddings : {np.max(embedding_sizes)}")
     print(f"Taille min des embeddings : {np.min(embedding_sizes)}")
 
-    # 📊 Affichage de la distribution des tailles d'embeddings
+    # Affichage de la distribution des tailles d'embeddings
     plt.figure(figsize=(8, 5))
     plt.hist(embedding_sizes, bins=30, color='teal', alpha=0.7, edgecolor='black')
     plt.xlabel("Taille des embeddings")
