@@ -13,7 +13,7 @@ sequences_file = f"{save_dir}/rna_sequences.txt"
 embeddings_index_file = f"{save_dir}/rna_embeddings_index.txt"
 
 # ==============================
-# 📌 HYPERPARAMÈTRES
+#  HYPERPARAMÈTRES
 # ==============================
 LATENT_DIM = 40  # Dimension des embeddings latents (D)
 NUM_QUERIES = 16  # Nombre de queries (K)
@@ -26,7 +26,7 @@ def generate_qformer_real_embeddings():
     os.makedirs(q_former_embeddings_dir, exist_ok=True)
 
     # ==============================
-    # 🧠 CHARGEMENT DU MODÈLE
+    # CHARGEMENT DU MODÈLE
     # ==============================
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     qformer = QFormer().to(DEVICE)  # Seulement l'encodeur QFormer
@@ -34,7 +34,7 @@ def generate_qformer_real_embeddings():
     qformer.eval()
 
     # ==============================
-    # 📦 PRÉPARATION DES MEMMAPS
+    # PRÉPARATION DES MEMMAPS
     # ==============================
     LATENT_DIM = 40
     NUM_QUERIES = 16
@@ -56,7 +56,7 @@ def generate_qformer_real_embeddings():
 
 
     # ==============================
-    # 🔥 EXTRACTION ET SAUVEGARDE DES EMBEDDINGS
+    # EXTRACTION ET SAUVEGARDE DES EMBEDDINGS
     # ==============================
     print("Extracting Q-Former embeddings...")
 
@@ -66,28 +66,28 @@ def generate_qformer_real_embeddings():
     for i in tqdm(range(0, num_sequences, BATCH_SIZE)):
         batch_filenames = embedding_filenames[i:i+BATCH_SIZE]
 
-        # 🔥 Chargement des embeddings bruts
+        # Chargement des embeddings bruts
         batch_token_embs = []
         for emb_file in batch_filenames:
             emb = np.load(os.path.join(embeddings_dir, emb_file))
             emb_tensor = torch.tensor(emb, dtype=torch.float32, device=DEVICE)
             batch_token_embs.append(emb_tensor)
 
-        # ✅ Gestion des longueurs variables
+        # Gestion des longueurs variables
         batch_token_embs = pad_sequence(batch_token_embs, batch_first=True)
 
         # ==============================
-        # 🧠 PASSAGE DANS LE Q-FORMER
+        # PASSAGE DANS LE Q-FORMER
         # ==============================
         with torch.no_grad():
             latents = qformer(batch_token_embs)  # (B, NUM_QUERIES, LATENT_DIM)
 
-        # ✅ Sauvegarde des embeddings complets
+        # Sauvegarde des embeddings complets
         latents_np = latents.cpu().numpy()
         qformer_embeddings[index:index+latents_np.shape[0], :, :] = latents_np
 
         # ==============================
-        # 📁 SAUVEGARDE INDIVIDUELLE POUR CHAQUE ÉCHANTILLON
+        # SAUVEGARDE INDIVIDUELLE POUR CHAQUE ÉCHANTILLON
         # ==============================
         for j, emb in enumerate(latents_np):
             embedding_filename = f"qformer_embedding_{idx}.npy"
@@ -98,9 +98,9 @@ def generate_qformer_real_embeddings():
         index += latents_np.shape[0]
 
     # ==============================
-    # 🔁 FLUSH POUR ENREGISTRER LES MEMMAPS
+    # FLUSH POUR ENREGISTRER LES MEMMAPS
     # ==============================
     qformer_embeddings.flush()
 
-    print("✅ Extraction terminée !")
+    print("Extraction terminée !")
     print("Shape des embeddings complets :", qformer_embeddings.shape)
