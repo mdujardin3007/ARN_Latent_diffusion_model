@@ -13,7 +13,7 @@ fm_model, batch_converter, alphabet, device = get_fm_model()
 
 
 # =============================================================================
-# 1️⃣ Génération des ARN aléatoires
+# Génération des ARN aléatoires
 # =============================================================================
 
 def sample_lengths(num_samples, min_len=50, max_len=800):
@@ -61,7 +61,7 @@ print("Exemple de séquence générée :", rna_sequences[0][:80], "...")
 print("Longueur de cette séquence :", len(rna_sequences[0]))
 
 # =============================================================================
-# 2️⃣ Transformation des ARN en embeddings via RNA‑FM
+# Transformation des ARN en embeddings via RNA‑FM
 # =============================================================================
 
 # Répertoire de sauvegarde et fichiers
@@ -131,4 +131,4 @@ def generate_random_qformer_embeddings():
     # Finalisation de l'écriture sur disque
     random_qformer_embeddings.flush()
 
-    print("✅ Extraction terminée !")
+    print("Extraction terminée !")
